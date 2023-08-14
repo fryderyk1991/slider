@@ -73,6 +73,7 @@ const initCustomEvents = function (
   sliderRootElement.addEventListener("js-slider-img-next", onImageNext);
   sliderRootElement.addEventListener("js-slider-img-prev", onImagePrev);
   sliderRootElement.addEventListener("js-slider-close", onClose);
+
 };
 
 const onImageClick = function (event, sliderRootElement, imagesSelector) {
@@ -96,8 +97,8 @@ const onImageClick = function (event, sliderRootElement, imagesSelector) {
   const selectedGroupOfImages = getImages.filter(function (image) {
     return image.dataset.sliderGroupName === eventGroupName;
   });
-  
     const sliderThumbsItemProto = document.querySelector('.js-slider__thumbs-item.js-slider__thumbs-item--prototype');
+    
     const sliderFooter = document.querySelector('.js-slider__thumbs');
     selectedGroupOfImages.forEach(function(el) {
       const images = el.querySelector('img');
@@ -106,12 +107,15 @@ const onImageClick = function (event, sliderRootElement, imagesSelector) {
       const newImages = newSliderThumbsProto.firstChild.nextElementSibling;
       newImages.setAttribute('src', atr);
       newSliderThumbsProto.classList.remove('js-slider__thumbs-item--prototype');
-      sliderFooter.appendChild(newSliderThumbsProto);
+      sliderFooter.appendChild(newImages);
       if (atr === currentImageSrc) {
         newImages.classList.add('js-slider__thumbs-image--current');    
       }
     })
+    setInterval(onImageNext, 2000);
 };
+
+
 
 const onImageNext = function (event) {
   console.log(this, "onImageNext");
@@ -126,7 +130,9 @@ const onImageNext = function (event) {
 
   
   const currentImage = document.querySelector('.js-slider__thumbs-image--current');
-  const nextImage = currentImage.parentElement.nextElementSibling.lastElementChild;
+  const figureProto = document.querySelector('.js-slider__thumbs-item--prototype')
+  const nextImage = currentImage.nextElementSibling;
+  const firstImage = figureProto.nextElementSibling;
   
     if (nextImage) {
       currentImage.classList.remove('js-slider__thumbs-image--current')
@@ -135,8 +141,16 @@ const onImageNext = function (event) {
       const sliderImage = document.querySelector('.js-slider__image');
       sliderImage.setAttribute('src', getAtr)
     }
+   else {
+    currentImage.classList.remove('js-slider__thumbs-image--current');
+    firstImage.classList.add('js-slider__thumbs-image--current');
+    const getAtr = firstImage.getAttribute('src');
+    const sliderImage = document.querySelector('.js-slider__image');
+    sliderImage.setAttribute('src', getAtr)
+   }
     
 }
+
 
 const onImagePrev = function (event) {
   console.log(this, "onImagePrev");
@@ -149,14 +163,22 @@ const onImagePrev = function (event) {
   // 4. przełączyć klasę [.js-slider__thumbs-image--current] do odpowiedniego elementu
   // 5. podmienić atrybut [src] dla [.js-slider__image]
   const currentImage = document.querySelector('.js-slider__thumbs-image--current');
-  const prevImage = currentImage.parentElement.previousElementSibling.lastElementChild;
+  const figureProto = document.querySelector('.js-slider__thumbs-item--prototype')
+  const prevImage = currentImage.previousElementSibling;
+  const lastImage = figureProto.parentElement.lastElementChild;
   if (prevImage && !prevImage.classList.contains('js-slider__thumbs-item--prototype')) {
     currentImage.classList.remove('js-slider__thumbs-image--current');
     prevImage.classList.add('js-slider__thumbs-image--current');
     const getAtr = prevImage.getAttribute('src');
     const sliderImage = document.querySelector('.js-slider__image');
-    sliderImage.setAttribute('src', getAtr);
-  
+    sliderImage.setAttribute('src', getAtr); 
+}
+else {
+  currentImage.classList.remove('js-slider__thumbs-image--current');
+  lastImage.classList.add('js-slider__thumbs-image--current');
+  const getAtr = lastImage.getAttribute('src');
+  const sliderImage = document.querySelector('.js-slider__image');
+  sliderImage.setAttribute('src', getAtr)
 }
 };
 
