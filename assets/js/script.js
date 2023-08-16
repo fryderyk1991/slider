@@ -51,7 +51,6 @@ const initEvents = function (imagesList, sliderRootElement) {
 
 const fireCustomEvent = function (element, name) {
   console.log(element.className, "=>", name);
-
   const event = new CustomEvent(name, {
     bubbles: true,
   });
@@ -69,11 +68,11 @@ const initCustomEvents = function (
       onImageClick(event, sliderRootElement, imagesSelector);
     });
   });
-
   sliderRootElement.addEventListener("js-slider-img-next", onImageNext);
   sliderRootElement.addEventListener("js-slider-img-prev", onImagePrev);
   sliderRootElement.addEventListener("js-slider-close", onClose);
 };
+
 
 const onImageClick = function (event, sliderRootElement, imagesSelector) {
   // todo:
@@ -83,7 +82,9 @@ const onImageClick = function (event, sliderRootElement, imagesSelector) {
   // 4. wyszukać wszystkie zdjęcia należące do danej grupy, które wykorzystasz do osadzenia w dolnym pasku
   // 5. utworzyć na podstawie elementu [.js-slider__thumbs-item--prototype] zawartość dla [.js-slider__thumbs];
   // 6. zaznaczyć przy pomocy klasy [.js-slider__thumbs-image--current], który element jest aktualnie wyświetlany
-  
+
+  const intervalSlide = setInterval(onImageNext, 2000)
+
   sliderRootElement.classList.add("js-slider--active"); 
 
   function getCurrentImageAtr() {
@@ -161,7 +162,6 @@ const onImageNext = function (event) {
   const nextFigure = currentImage.parentElement.nextElementSibling;
   const secondFigure = figureProto.nextElementSibling;
   const nextSlide = changeSlide(currentImage, nextFigure, secondFigure);
- 
 };
 
 const onImagePrev = function (event) {
