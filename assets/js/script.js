@@ -17,8 +17,6 @@ const runJSSlider = function () {
   initCustomEvents(imagesList, sliderRootElement, imagesSelector);
 };
 
-
-
 const initEvents = function (imagesList, sliderRootElement) {
   imagesList.forEach(function (item) {
     item.addEventListener("click", function (e) {
@@ -65,13 +63,25 @@ const initCustomEvents = function (
   sliderRootElement.addEventListener("js-slider-img-next", onImageNext);
   sliderRootElement.addEventListener("js-slider-img-prev", onImagePrev);
   sliderRootElement.addEventListener("js-slider-close", onClose);
-  
+  sliderRootElement.addEventListener("js-auto-slide-start", autoSlideStart);
+  // sliderRootElement.addEventListener("js-auto-slide-stop", autoSlideStop)
 };
 
 
-const onImageClick = function (event, sliderRootElement, imagesSelector) {  
-  sliderRootElement.classList.add("js-slider--active"); 
+const autoSlideStart = function () {
+  console.log(this, "js-auto-slide-start");
+  const currentImage = document.querySelector(".js-slider__thumbs-image--current");
+  const figureProto = document.querySelector(".js-slider__thumbs-item--prototype");
+  const nextFigure = currentImage.parentElement.nextElementSibling;
+  const secondFigure = figureProto.nextElementSibling;
+  const nextSlide = changeSlide(currentImage, nextFigure, secondFigure);
+}
 
+
+
+const onImageClick = function (event, sliderRootElement, imagesSelector) {  
+  const startInterval = setInterval(autoSlideStart, 2000)
+  sliderRootElement.classList.add("js-slider--active"); 
   function getCurrentImageAtr() {
     const currentImage = event.target.querySelector("img");
     const currentImageSrc = currentImage.getAttribute("src");
@@ -104,9 +114,12 @@ const onImageClick = function (event, sliderRootElement, imagesSelector) {
       const currentImageSrc = getCurrentImageAtr();
       if (atr === currentImageSrc) {
         newImages.classList.add("js-slider__thumbs-image--current");
+        
       }
     });
 };
+
+
 
 function changeSlide(currentImage, figure, siblingEl) {
   currentImage.classList.remove('js-slider__thumbs-image--current');
@@ -126,11 +139,8 @@ function changeSlide(currentImage, figure, siblingEl) {
     const sliderImage = document.querySelector('.js-slider__image');
     sliderImage.setAttribute('src', getAtr)
   }
-
+ 
 }
-
-
-
 
 const onImageNext = function (event) {
   console.log(this, "onImageNext");
@@ -141,8 +151,6 @@ const onImageNext = function (event) {
   const nextSlide = changeSlide(currentImage, nextFigure, secondFigure);
 };
 
-
-
 const onImagePrev = function (event) {
   console.log(this, "onImagePrev");
   const currentImage = document.querySelector(".js-slider__thumbs-image--current");
@@ -152,7 +160,6 @@ const onImagePrev = function (event) {
 
   const prevSlide = changeSlide(currentImage, prevFigure, lastFigure);
 };
-
 
 const onClose = function (event) {
   const sectionSlider = document.querySelector(".js-slider");
@@ -165,4 +172,5 @@ const onClose = function (event) {
     </figure>`;
   }
 };
+
 
