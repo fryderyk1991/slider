@@ -2,7 +2,7 @@ const init = function () {
   const imagesList = document.querySelectorAll(".gallery__item");
   imagesList.forEach((img) => {
     img.dataset.sliderGroupName = Math.random() > 0.5 ? "nice" : "good";
-  }); // za każdym przeładowaniem strony przydzielaj inną nazwę grupy dla zdjęcia
+  });
   runJSSlider();
 };
 
@@ -17,12 +17,15 @@ const runJSSlider = function () {
   initCustomEvents(imagesList, sliderRootElement, imagesSelector);
 };
 
+
+
 const initEvents = function (imagesList, sliderRootElement) {
   imagesList.forEach(function (item) {
     item.addEventListener("click", function (e) {
       fireCustomEvent(e.currentTarget, "js-slider-img-click");
     });
   });
+
 
   const navNext = sliderRootElement.querySelector(".js-slider__nav--next");
   navNext.addEventListener("click", function (e) {
@@ -52,7 +55,7 @@ const fireCustomEvent = function (element, name) {
 const initCustomEvents = function (
   imagesList,
   sliderRootElement,
-  imagesSelector
+  imagesSelector,
 ) {
   imagesList.forEach(function (img) {
     img.addEventListener("js-slider-img-click", function (event) {
@@ -62,10 +65,11 @@ const initCustomEvents = function (
   sliderRootElement.addEventListener("js-slider-img-next", onImageNext);
   sliderRootElement.addEventListener("js-slider-img-prev", onImagePrev);
   sliderRootElement.addEventListener("js-slider-close", onClose);
+  
 };
 
 
-const onImageClick = function (event, sliderRootElement, imagesSelector) {
+const onImageClick = function (event, sliderRootElement, imagesSelector) {  
   sliderRootElement.classList.add("js-slider--active"); 
 
   function getCurrentImageAtr() {
@@ -83,8 +87,7 @@ const onImageClick = function (event, sliderRootElement, imagesSelector) {
     });
     return selectedGroupOfImages;
   }
-
-  function showThumbsImages () {
+  
     const sliderThumbsItemProto = document.querySelector(
       ".js-slider__thumbs-item.js-slider__thumbs-item--prototype"
     );
@@ -103,7 +106,6 @@ const onImageClick = function (event, sliderRootElement, imagesSelector) {
         newImages.classList.add("js-slider__thumbs-image--current");
       }
     });
-  }
 };
 
 function changeSlide(currentImage, figure, siblingEl) {
@@ -127,6 +129,9 @@ function changeSlide(currentImage, figure, siblingEl) {
 
 }
 
+
+
+
 const onImageNext = function (event) {
   console.log(this, "onImageNext");
   const currentImage = document.querySelector(".js-slider__thumbs-image--current");
@@ -134,8 +139,9 @@ const onImageNext = function (event) {
   const nextFigure = currentImage.parentElement.nextElementSibling;
   const secondFigure = figureProto.nextElementSibling;
   const nextSlide = changeSlide(currentImage, nextFigure, secondFigure);
-  return nextSlide;
 };
+
+
 
 const onImagePrev = function (event) {
   console.log(this, "onImagePrev");
@@ -146,6 +152,7 @@ const onImagePrev = function (event) {
 
   const prevSlide = changeSlide(currentImage, prevFigure, lastFigure);
 };
+
 
 const onClose = function (event) {
   const sectionSlider = document.querySelector(".js-slider");
@@ -158,6 +165,4 @@ const onClose = function (event) {
     </figure>`;
   }
 };
-
-
 
