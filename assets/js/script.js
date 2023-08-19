@@ -29,20 +29,21 @@ const initEvents = function (imagesList, sliderRootElement) {
   navNext.addEventListener("click", function (e) {
     fireCustomEvent(e.currentTarget, "js-slider-img-next");
   });
-  navNext.addEventListener("mouseover", function(){
-    clearInterval(interval)
-  }) 
+  navNext.addEventListener("mouseover", function(e){
+    fireCustomEvent(e.currentTarget, "js-auto-slide-stop")
+  })
   const navPrev = sliderRootElement.querySelector(".js-slider__nav--prev");
   navPrev.addEventListener("click", function (e) {
     fireCustomEvent(e.currentTarget, "js-slider-img-prev");
   });
-  navPrev.addEventListener("mouseover", function(){
-    clearInterval(interval)
+  navPrev.addEventListener("mouseover",function(e) {
+    fireCustomEvent(e.currentTarget, "js-auto-slide-stop")
   }) 
   const zoom = sliderRootElement.querySelector(".js-slider__zoom");
   zoom.addEventListener("click", function (e) {
     if (e.target === zoom) {
       fireCustomEvent(e.currentTarget, "js-slider-close");
+      fireCustomEvent(e.currentTarget, "js-auto-slide-stop")
     }
   });
 };
@@ -181,6 +182,5 @@ const onClose = function (event) {
     <img class="js-slider__thumbs-image">
     </figure>`;
   }
- autoSlideStop()
 };
 
