@@ -64,23 +64,26 @@ const initCustomEvents = function (
   sliderRootElement.addEventListener("js-slider-img-prev", onImagePrev);
   sliderRootElement.addEventListener("js-slider-close", onClose);
   sliderRootElement.addEventListener("js-auto-slide-start", autoSlideStart);
-  // sliderRootElement.addEventListener("js-auto-slide-stop", autoSlideStop)
+  sliderRootElement.addEventListener("js-auto-slide-stop", autoSlideStop)
 };
 
+let interval;
 
 const autoSlideStart = function () {
-  console.log(this, "js-auto-slide-start");
+  console.log(this, "js-auto-slide-start");  
   const currentImage = document.querySelector(".js-slider__thumbs-image--current");
   const figureProto = document.querySelector(".js-slider__thumbs-item--prototype");
   const nextFigure = currentImage.parentElement.nextElementSibling;
   const secondFigure = figureProto.nextElementSibling;
   const nextSlide = changeSlide(currentImage, nextFigure, secondFigure);
 }
+const autoSlideStop = function () {
+  console.log(this, "js-auto-slide-stop"); 
+  clearInterval(interval)
+}
 
-
-
-const onImageClick = function (event, sliderRootElement, imagesSelector) {  
-  const startInterval = setInterval(autoSlideStart, 2000)
+const onImageClick = function (event, sliderRootElement, imagesSelector) { 
+  interval = setInterval(autoSlideStart, 2000) 
   sliderRootElement.classList.add("js-slider--active"); 
   function getCurrentImageAtr() {
     const currentImage = event.target.querySelector("img");
@@ -171,6 +174,6 @@ const onClose = function (event) {
     <img class="js-slider__thumbs-image">
     </figure>`;
   }
+ autoSlideStop()
 };
-
 
